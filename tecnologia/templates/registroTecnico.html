@@ -1,0 +1,120 @@
+{% extends "./plantillaPrin.html" %}
+{% block contenido %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <br>
+            <h1><b>Registrar Nuevo Técnico</b></h1>
+            <hr>
+            <form enctype="multipart/form-data" id="form_nuevo_tecnico" action="/guardarTecnico/" method="post">
+                {% csrf_token %}
+                <b>Nombres:</b> <br>
+                <input placeholder="Ingrese sus nombres" class="form-control" type="text" name="nombres">
+                <br>
+                <b>Apellidos:</b> <br>
+                <input placeholder="Ingrese sus apellidos" class="form-control" type="text" name="apellidos">
+                <br>
+                <b>Cédula:</b> <br>
+                <input placeholder="Ingrese su número de cédula" class="form-control" type="text" name="cedula">
+                <br>
+                <b>Correo:</b> <br>
+                <input placeholder="Ingrese su correo electrónico" class="form-control" type="email" name="correo">
+                <br>
+                <b>Teléfono:</b> <br>
+                <input placeholder="Ingrese su número de teléfono" class="form-control" type="text" name="telefono">
+                <br>
+                <b>Especialidad:</b> <br>
+                <input placeholder="Ej: Redes, Programación, Bases de Datos" class="form-control" type="text" name="especialidad">
+                <br>
+                <b>Fotografía:</b>
+                <input type="file" name="foto" id="foto">
+                <br>
+                <br>
+                <button class="btn btn-success" type="submit">
+                    <i class="icon-save"></i>
+                    Guardar</button>
+                <a href="/listadoTecnicos/" class="btn btn-secondary">
+                    <i class="icon-close"></i>
+                    Cancelar</a>
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#form_nuevo_tecnico").validate({
+        rules: {
+            nombres: {
+                required: true,
+                minlength: 2,
+                maxlength: 80
+            },
+            apellidos: {
+                required: true,
+                minlength: 2,
+                maxlength: 80
+            },
+            cedula: {
+                required: true,
+                minlength: 10,
+                maxlength: 10,
+                digits: true
+            },
+            correo: {
+                required: true,
+                email: true
+            },
+            telefono: {
+                minlength: 10,
+                maxlength: 10,
+                digits: true
+            },
+            especialidad: {
+                maxlength: 100
+            }
+        },
+        messages: {
+            nombres: {
+                required: "Por favor, ingrese sus nombres",
+                minlength: "Los nombres deben tener al menos 2 caracteres",
+                maxlength: "Los nombres no pueden exceder 80 caracteres"
+            },
+            apellidos: {
+                required: "Por favor, ingrese sus apellidos",
+                minlength: "Los apellidos deben tener al menos 2 caracteres",
+                maxlength: "Los apellidos no pueden exceder 80 caracteres"
+            },
+            cedula: {
+                required: "Por favor, ingrese su número de cédula",
+                minlength: "La cédula debe tener 10 dígitos",
+                maxlength: "La cédula debe tener 10 dígitos",
+                digits: "La cédula solo debe contener números"
+            },
+            correo: {
+                required: "Por favor, ingrese su correo electrónico",
+                email: "Ingrese un correo electrónico válido"
+            },
+            telefono: {
+                minlength: "El teléfono debe tener 10 dígitos",
+                maxlength: "El teléfono debe tener 10 dígitos",
+                digits: "El teléfono solo debe contener números"
+            },
+            especialidad: {
+                maxlength: "La especialidad no puede exceder 100 caracteres"
+            }
+        }
+    });
+</script>
+<script>
+    $("#foto").fileinput({
+        language: "es",
+        allowedFileExtensions: ["jpg|jpeg|png"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        showClose: false,
+    });
+    $(".fileinput-upload").hide();
+</script>
+{% endblock %}

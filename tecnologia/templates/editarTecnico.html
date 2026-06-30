@@ -1,0 +1,99 @@
+{% extends "./plantillaPrin.html" %}
+{% block contenido %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <br>
+            <h1><b>Actualizar Técnico</b></h1>
+            <hr>
+            <form enctype="multipart/form-data" id="form_editar_tecnico" action="/actualizarTecnico/{{ tecnico.id }}/" method="post">
+                {% csrf_token %}
+                <b>Nombres:</b> <br>
+                <input required minlength="2" maxlength="80" placeholder="Ingrese sus nombres" class="form-control" type="text" name="nombres" value="{{ tecnico.nombres }}">
+                <br>
+                <b>Apellidos:</b> <br>
+                <input required minlength="2" maxlength="80" placeholder="Ingrese sus apellidos" class="form-control" type="text" name="apellidos" value="{{ tecnico.apellidos }}">
+                <br>
+                <b>Cédula:</b> <br>
+                <input required minlength="10" maxlength="10" placeholder="Ingrese su número de cédula" class="form-control" type="text" name="cedula" value="{{ tecnico.cedula }}">
+                <br>
+                <b>Correo:</b> <br>
+                <input required placeholder="Ingrese su correo electrónico" class="form-control" type="email" name="correo" value="{{ tecnico.correo }}">
+                <br>
+                <b>Teléfono:</b> <br>
+                <input minlength="10" maxlength="10" placeholder="Ingrese su número de teléfono" class="form-control" type="text" name="telefono" value="{{ tecnico.telefono }}">
+                <br>
+                <b>Especialidad:</b> <br>
+                <input maxlength="100" placeholder="Ej: Redes, Programación, Bases de Datos" class="form-control" type="text" name="especialidad" value="{{ tecnico.especialidad }}">
+                <br>
+                <b>Fotografía:</b><br>
+                <input type="file" name="foto" id="foto" class="form-control"
+                {% if tecnico.foto %}
+                    data-initial-preview="<img src='{{ tecnico.foto.url }}' class='file-preview-image'>"
+                    data-initial-preview-config='[{"caption": "{{ tecnico.foto.name|cut:"tecnicos/" }}", "showDelete": false}]'
+                {% endif %}
+                >
+                <br>
+                <br>
+                <button class="btn btn-success" type="submit">Actualizar</button>
+                <a href="/listadoTecnicos/" class="btn btn-secondary"><i class="ti-close"></i> Cancelar</a>
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#form_editar_tecnico").validate({
+        rules: {
+            nombres: { required: true, minlength: 2, maxlength: 80 },
+            apellidos: { required: true, minlength: 2, maxlength: 80 },
+            cedula: { required: true, minlength: 10, maxlength: 10, digits: true },
+            correo: { required: true, email: true },
+            telefono: { minlength: 10, maxlength: 10, digits: true },
+            especialidad: { maxlength: 100 }
+        },
+        messages: {
+            nombres: {
+                required: "Por favor, ingrese sus nombres",
+                minlength: "Los nombres deben tener al menos 2 caracteres"
+            },
+            apellidos: {
+                required: "Por favor, ingrese sus apellidos",
+                minlength: "Los apellidos deben tener al menos 2 caracteres"
+            },
+            cedula: {
+                required: "Por favor, ingrese su número de cédula",
+                minlength: "La cédula debe tener 10 dígitos",
+                maxlength: "La cédula debe tener 10 dígitos",
+                digits: "La cédula solo debe contener números"
+            },
+            correo: {
+                required: "Por favor, ingrese su correo electrónico",
+                email: "Ingrese un correo electrónico válido"
+            },
+            telefono: {
+                minlength: "El teléfono debe tener 10 dígitos",
+                maxlength: "El teléfono debe tener 10 dígitos",
+                digits: "El teléfono solo debe contener números"
+            },
+            especialidad: {
+                maxlength: "La especialidad no puede exceder 100 caracteres"
+            }
+        }
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $("#foto").fileinput({
+            language: "es",
+            allowedFileExtensions: ["jpg", "jpeg", "png"],
+            showCaption: false,
+            dropZoneEnabled: true,
+            showClose: false,
+        });
+        $(".fileinput-upload").hide();
+    });
+</script>
+{% endblock %}

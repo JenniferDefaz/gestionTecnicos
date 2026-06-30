@@ -1,0 +1,50 @@
+{% extends "./plantillaPrin.html" %}
+{% block contenido %}
+
+<center>
+    <br>
+    <h1> <b>Cursos Disponibles</b></h1>
+    <hr>
+</center>
+<br>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <table id="tbl_cursos_disponibles" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NOMBRE</th>
+                    <th>INSTRUCTOR</th>
+                    <th>DURACIÓN</th>
+                    <th>FECHA INICIO</th>
+                    <th>ACCIÓN</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cursoTemporal in misCursos %}
+                <tr>
+                    <td>{{ cursoTemporal.id }}</td>
+                    <td>{{ cursoTemporal.nombre }}</td>
+                    <td>{{ cursoTemporal.instructor }}</td>
+                    <td>{{ cursoTemporal.horas_duracion }} horas</td>
+                    <td>{{ cursoTemporal.fecha_inicio }}</td>
+                    <td>
+                        <a href="/matricularCurso/{{ cursoTemporal.id }}/"
+                           class="btn btn-outline-success" title="Matricularme"
+                           onclick="return confirm('¿Desea matricularse en este curso?');">
+                            <i class="ti-check-box"></i> Matricularme
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    new DataTable('#tbl_cursos_disponibles', {
+    });
+</script>
+{% endblock %}

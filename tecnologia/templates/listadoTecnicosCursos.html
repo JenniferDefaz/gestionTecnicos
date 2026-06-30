@@ -1,0 +1,67 @@
+{% extends "./plantillaPrin.html" %}
+{% block contenido %}
+
+<center>
+    <br>
+    <h1> <b>Técnicos matriculados en: {{ curso.nombre }}</b></h1>
+    <hr>
+</center>
+<br>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <table id="tbl_inscripciones" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>TÉCNICO</th>
+                    <th>CÉDULA</th>
+                    <th>ESTADO</th>
+                    <th>NOTA</th>
+                    <th>FECHA INSCRIPCIÓN</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inscripcionTemporal in misInscripciones %}
+                <tr>
+                    <td>{{ inscripcionTemporal.id }}</td>
+                    <td>{{ inscripcionTemporal.tecnico.nombres }} {{ inscripcionTemporal.tecnico.apellidos }}</td>
+                    <td>{{ inscripcionTemporal.tecnico.cedula }}</td>
+                    <td>{{ inscripcionTemporal.get_estado_display }}</td>
+                    <td>{{ inscripcionTemporal.nota_final|default:"Sin calificar" }}</td>
+                    <td>{{ inscripcionTemporal.fecha_inscripcion }}</td>
+                    <td>
+                        <a href="/editarInscripcion/{{ inscripcionTemporal.id }}/" class="btn btn-outline-warning" title="Calificar">
+                            <i class="ti-pencil-alt"></i>
+                        </a>
+                        {% if inscripcionTemporal.estado == "APROBADO" %}
+                            <a href="/certificado/{{ inscripcionTemporal.id }}/"
+                               onclick="window.open(this.href,'Certificado','width=900,height=700,resizable=yes,scrollbars=yes'); return false;"
+                               class="btn btn-outline-success" title="Ver Certificado">
+                                <i class="ti-medall-alt"></i>
+                            </a>
+                        {% else %}
+                            <a title="Certificado no disponible" class="disabled btn btn-outline-success" href="javascript:void(0)">
+                                <i class="ti-medall-alt"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    new DataTable('#tbl_inscripciones', {
+        layout: {
+            topStart: {
+                buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5']
+            }
+        },
+       
+    });
+</script>
+{% endblock %}

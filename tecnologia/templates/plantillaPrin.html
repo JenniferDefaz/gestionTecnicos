@@ -1,11 +1,11 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-	<title>Unica - University Template</title>
+	<title>Sistema de Gestión de Técnicos - UTC</title>
 	<meta charset="UTF-8">
-	<meta name="description" content="Unica University Template">
-	<meta name="keywords" content="event, unica, creative, html">
+	<meta name="description" content="Sistema de Gestión de Técnicos en Tecnología">
+	<meta name="keywords" content="tecnicos, cursos, certificados, utc">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Favicon -->   
 	<link href="{% static 'img/favicon.ico' %}" rel="shortcut icon"/>
@@ -39,18 +39,18 @@
 	<header class="header-section">
 		<div class="container">
 			<!-- logo -->
-			<a href="index.html" class="site-logo"><img src="{% static 'img/logo.png' %}" alt=""></a>
+			<a href="/" class="site-logo"><img src="{% static 'img/logo.png' %}" alt=""></a>
 			<div class="nav-switch">
 				<i class="fa fa-bars"></i>
 			</div>
 			<div class="header-info">
 				<div class="hf-item">
 					<i class="fa fa-clock-o"></i>
-					<p><span>Working time:</span>Monday - Friday: 08 AM - 06 PM</p>
+					<p><span>Horario:</span>Lunes - Viernes: 08:00 - 18:00</p>
 				</div>
 				<div class="hf-item">
 					<i class="fa fa-map-marker"></i>
-					<p><span>Find us:</span>40 Baria Street 133/2, New York City, US</p>
+					<p><span>Encuéntranos:</span>Universidad Técnica de Cotopaxi, Latacunga, Ecuador</p>
 				</div>
 			</div>
 		</div>
@@ -66,12 +66,10 @@
 				<a href=""><i class="fa fa-shopping-cart"></i></a>
 			</div>
 			<ul class="main-menu">
-				<li class="active"><a href="index.html">Home</a></li>
-				<li><a href="about.html">About Us</a></li>
-				<li><a href="#">Event</a></li>
-				<li><a href="course.html">COURSES</a></li>
-				<li><a href="blog.html">blog</a></li>
-				<li><a href="contact.html">Contact</a></li>
+				<li><a href="/">INICIO</a></li>
+				<li><a href="/listadoTecnicos/">Listado Técnicos</a></li>
+				<li><a href="/listadoCursos/">Cursos</a></li>
+				<li><a href="/listadoInscripciones/">Matrículas</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -86,58 +84,48 @@
 				<div class="col-sm-6 col-lg-3 footer-widget">
 					<div class="about-widget">
 						<img src="{% static 'img/logo-light.png' %}" alt="">
-						<p>orem ipsum dolor sit amet, consecter adipiscing elite. Donec minos varius, viverra justo ut, aliquet nisl.</p>
+						<p>Sistema web para la gestión de técnicos en tecnología, sus cursos y la emisión de certificados de aprobación con validación mediante código QR.</p>
 						<div class="social pt-1">
-							<a href=""><i class="fa fa-twitter-square"></i></a>
-							<a href=""><i class="fa fa-facebook-square"></i></a>
-							<a href=""><i class="fa fa-google-plus-square"></i></a>
-							<a href=""><i class="fa fa-linkedin-square"></i></a>
-							<a href=""><i class="fa fa-rss-square"></i></a>
+							<a href="https://www.utc.edu.ec" target="_blank"><i class="fa fa-globe"></i></a>
+							<a href="https://www.facebook.com/UTCotopaxi" target="_blank"><i class="fa fa-facebook-square"></i></a>
+							<a href="https://twitter.com/utcotopaxi" target="_blank"><i class="fa fa-twitter-square"></i></a>
+							<a href="https://www.linkedin.com/school/universidad-tecnica-de-cotopaxi" target="_blank"><i class="fa fa-linkedin-square"></i></a>
 						</div>
 					</div>
 				</div>
 				<!-- widget -->
 				<div class="col-sm-6 col-lg-3 footer-widget">
-					<h6 class="fw-title">USEFUL LINK</h6>
+					<h6 class="fw-title">ENLACES ÚTILES</h6>
 					<div class="dobule-link">
 						<ul>
-							<li><a href="">Home</a></li>
-							<li><a href="">About us</a></li>
-							<li><a href="">Services</a></li>
-							<li><a href="">Events</a></li>
-							<li><a href="">Features</a></li>
-						</ul>
-						<ul>
-							<li><a href="">Policy</a></li>
-							<li><a href="">Term</a></li>
-							<li><a href="">Help</a></li>
-							<li><a href="">FAQs</a></li>
-							<li><a href="">Site map</a></li>
+							<li><a href="https://www.utc.edu.ec" target="_blank">Sitio web UTC</a></li>
+							<li><a href="https://www.utc.edu.ec/index.php/la-institucion" target="_blank">La Institución</a></li>
+							<li><a href="https://www.utc.edu.ec/index.php/contacto" target="_blank">Contacto UTC</a></li>
 						</ul>
 					</div>
 				</div>
 				<!-- widget -->
 				<div class="col-sm-6 col-lg-3 footer-widget">
-					<h6 class="fw-title">RECENT POST</h6>
+					<h6 class="fw-title">SOBRE EL SISTEMA</h6>
 					<ul class="recent-post">
 						<li>
-							<p>Snackable study:How to break <br> up your master's degree</p>
-							<span><i class="fa fa-clock-o"></i>24 Mar 2018</span>
+							<p>Generación de certificados <br> con validación por código QR</p>
+							<span><i class="fa fa-clock-o"></i>Proyecto académico 2026</span>
 						</li>
 						<li>
-							<p>Open University plans major <br> cuts to number of staff</p>
-							<span><i class="fa fa-clock-o"></i>24 Mar 2018</span>
+							<p>Gestión de técnicos <br> y cursos de capacitación</p>
+							<span><i class="fa fa-clock-o"></i>Deber individual - GIT</span>
 						</li>
 					</ul>
 				</div>
 				<!-- widget -->
 				<div class="col-sm-6 col-lg-3 footer-widget">
-					<h6 class="fw-title">CONTACT</h6>
+					<h6 class="fw-title">CONTACTO</h6>
 					<ul class="contact">
-						<li><p><i class="fa fa-map-marker"></i> 40 Baria Street 133/2, NewYork City,US</p></li>
-						<li><p><i class="fa fa-phone"></i> (+88) 111 555 666</p></li>
-						<li><p><i class="fa fa-envelope"></i> infodeercreative@gmail.com</p></li>
-						<li><p><i class="fa fa-clock-o"></i> Monday - Friday, 08:00AM - 06:00 PM</p></li>
+						<li><p><i class="fa fa-map-marker"></i> Universidad Técnica de Cotopaxi, Latacunga, Ecuador</p></li>
+						<li><p><i class="fa fa-phone"></i> (03) 2810195</p></li>
+						<li><p><i class="fa fa-envelope"></i> informacion@utc.edu.ec</p></li>
+						<li><p><i class="fa fa-clock-o"></i> Lunes - Viernes, 08:00 - 18:00</p></li>
 					</ul>
 				</div>
 			</div>
@@ -145,9 +133,8 @@
 		<!-- copyright -->
 		<div class="copyright">
 			<div class="container">
-				<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+				<p>
+Derechos reservados &copy;<script>document.write(new Date().getFullYear());</script> | Sistema de Gestión de Técnicos en Tecnología - <a href="https://www.utc.edu.ec" target="_blank">Universidad Técnica de Cotopaxi</a></p>
 			</div>		
 		</div>
 	</footer>

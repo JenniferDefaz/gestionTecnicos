@@ -1,0 +1,60 @@
+{% extends "./plantillaPrin.html" %}
+{% block contenido %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <br>
+            <h1><b>Editar Inscripción</b></h1>
+            <hr>
+            <form id="form_editar_inscripcion" action="/actualizarInscripcion/{{ inscripcion.id }}/" method="post">
+                {% csrf_token %}
+                <b>Técnico:</b> <br>
+                <input class="form-control" type="text" value="{{ inscripcion.tecnico.nombres }} {{ inscripcion.tecnico.apellidos }}" disabled>
+                <br>
+                <b>Cédula:</b> <br>
+                <input class="form-control" type="text" value="{{ inscripcion.tecnico.cedula }}" disabled>
+                <br>
+                <b>Curso:</b> <br>
+                <input class="form-control" type="text" value="{{ inscripcion.curso.nombre }}" disabled>
+                <br>
+                <b>Fecha de Inscripción:</b> <br>
+                <input class="form-control" type="text" value="{{ inscripcion.fecha_inscripcion }}" disabled>
+                <br>
+                <b>Nota Final:</b> <br>
+                <input required min="0" max="10" placeholder="Ingrese la nota final (0-10)" class="form-control" type="number" step="0.01" name="nota_final" value="{{ inscripcion.nota_final|default:'' }}">
+                <br>
+                <b>Estado:</b> <br>
+                <select required class="form-control" name="estado">
+                    <option value="EN_CURSO" {% if inscripcion.estado == "EN_CURSO" %}selected{% endif %}>En curso</option>
+                    <option value="APROBADO" {% if inscripcion.estado == "APROBADO" %}selected{% endif %}>Aprobado</option>
+                    <option value="REPROBADO" {% if inscripcion.estado == "REPROBADO" %}selected{% endif %}>Reprobado</option>
+                </select>
+                <br>
+                <br>
+                <button class="btn btn-success" type="submit">Actualizar</button>
+                <a href="/listadoTecnicosCursos/{{ inscripcion.curso.id }}/" class="btn btn-secondary"><i class="ti-close"></i> Cancelar</a>
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#form_editar_inscripcion").validate({
+        rules: {
+            nota_final: { required: true, number: true, min: 0, max: 10 },
+            estado: { required: true }
+        },
+        messages: {
+            nota_final: {
+                required: "Por favor, ingrese la nota final",
+                number: "Solo se permiten números",
+                min: "La nota no puede ser menor a 0",
+                max: "La nota no puede ser mayor a 10"
+            },
+            estado: { required: "Seleccione un estado" }
+        }
+    });
+</script>
+{% endblock %}

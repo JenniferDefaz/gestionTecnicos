@@ -13,9 +13,6 @@ class Tecnico(models.Model):
     telefono = models.CharField(max_length=10, blank=True)
     especialidad = models.CharField(max_length=100, blank=True)
     foto = models.FileField(upload_to='tecnicos', null=True, blank=True)
-    # EL ARCHIVO QUE ESTA EN FOTO ES DE LA CARPETA MEDIA/TECNICOS
-
-
 
 class Curso(models.Model):
     id = models.AutoField(primary_key=True)
@@ -25,8 +22,6 @@ class Curso(models.Model):
     horas_duracion = models.PositiveIntegerField()
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
-
-
 
 # INSCRIPCION: relación Tecnico - Curso
 # El certificado se va ha generar dinamicamente desde esta entidad asi como el ING hizo el de reporte OJO

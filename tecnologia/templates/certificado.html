@@ -1,0 +1,79 @@
+
+{% load static %}
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+
+            <div class="border border-5 p-5" style="border-color:#1a3c6e !important; background-color:#fffdf7;">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <img src="{% static 'img/logo_institucion.png' %}" alt="Logo Institución" style="height:75px;">
+                    <img src="{% static 'img/logo_secundario.png' %}" alt="Logo Secundario" style="height:75px;">
+                </div>
+
+                <div class="text-center mt-3">
+                    <p class="text-uppercase mb-1" style="letter-spacing:3px; color:#c9a227;">
+                        Sistema de Gestión de Técnicos en Tecnología</p>
+                    <h1 class="text-uppercase fw-bold" style="color:#1a3c6e; letter-spacing:6px;">
+                        Certificado de Aprobación</h1>
+                </div>
+
+                <div class="text-center my-4">
+                    <p class="fs-5">Se otorga el presente certificado a:</p>
+                    <h2 class="fw-bold d-inline-block border-bottom border-3 pb-2 mb-3" style="color:#1a3c6e; border-color:#c9a227 !important;">
+                        {{ inscripcion.tecnico.nombres }} {{ inscripcion.tecnico.apellidos }}
+                    </h2>
+                    <p class="fs-5">Por haber aprobado satisfactoriamente el curso:</p>
+                    <h4 class="fst-italic mb-4">"{{ inscripcion.curso.nombre }}"</h4>
+
+                    <div class="d-flex justify-content-center gap-5 text-secondary">
+                        <p><b>Cédula:</b> {{ inscripcion.tecnico.cedula }}</p>
+                        <p><b>Instructor:</b> {{ inscripcion.curso.instructor }}</p>
+                        <p><b>Duración:</b> {{ inscripcion.curso.horas_duracion }} horas</p>
+                        <p><b>Nota Final:</b> {{ inscripcion.nota_final }}</p>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-end mt-5">
+                    <div class="text-center" style="width:280px;">
+                        <hr class="border-2" style="border-color:#1a3c6e;">
+                        <p class="mb-0"><b>Director Académico</b></p>
+                        <p class="small text-muted text-uppercase">Firma de Responsabilidad</p>
+                    </div>
+
+                    <div class="text-center" style="width:160px;">
+                        <!-- Espacio reservado para el codigo QR, se conecta despues -->
+                        <div id="qrcode" class="border border-secondary d-flex align-items-center justify-content-center mx-auto text-muted small"
+                             style="width:128px; height:128px;">
+                            QR aquí
+                        </div>
+                        <p class="small text-muted mt-1">Escanee para validar</p>
+                    </div>
+
+                    <div class="text-center" style="width:280px;">
+                        <hr class="border-2" style="border-color:#1a3c6e;">
+                        <p class="mb-0"><b>Coordinador de Cursos</b></p>
+                        <p class="small text-muted text-uppercase">Firma de Responsabilidad</p>
+                    </div>
+                </div>
+
+                <div class="text-center text-muted small mt-4">
+                    Certificado N.° {{ inscripcion.id }} &nbsp;|&nbsp; Fecha de emisión: {{ inscripcion.fecha_inscripcion }}
+                </div>
+
+            </div>
+
+            <div class="text-center mt-3">
+                <button class="btn btn-primary" onclick="window.print();">Imprimir Certificado</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style media="print">
+    .btn { display: none; }
+</style>
+

@@ -1,0 +1,67 @@
+{% extends "./plantillaPrin.html" %}
+{% block contenido %}
+
+<center>
+    <br>
+    <h1> <b>Cursos Registrados</b>
+        <a href="/nuevoCurso/" class="btn btn-info"> <i class="ti-plus"></i>
+            Agregar Nuevo</a>
+    </h1>
+    <hr>
+</center>
+<br>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <table id="tbl_cursos" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NOMBRE</th>
+                    <th>INSTRUCTOR</th>
+                    <th>DURACIÓN</th>
+                    <th>FECHA INICIO</th>
+                    <th>FECHA FIN</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cursoTemporal in misCursos %}
+                <tr>
+                    <td>{{ cursoTemporal.id }}</td>
+                    <td>{{ cursoTemporal.nombre }}</td>
+                    <td>{{ cursoTemporal.instructor }}</td>
+                    <td>{{ cursoTemporal.horas_duracion }} horas</td>
+                    <td>{{ cursoTemporal.fecha_inicio }}</td>
+                    <td>{{ cursoTemporal.fecha_fin }}</td>
+                    <td>
+                        <a href="/editarCurso/{{ cursoTemporal.id }}/" class="btn btn-outline-warning" title="Editar Curso">
+                            <i class="ti-pencil-alt"></i>
+                        </a>
+                        <a href="/eliminarCurso/{{ cursoTemporal.id }}/"
+                           class="btn btn-outline-danger" title="Eliminar Curso"
+                           onclick="confirmarEliminacion(event, this.href)">
+                            <i class="ti-trash"></i>
+                        </a>
+                        <a href="/listadoTecnicosCursos/{{ cursoTemporal.id }}/" class="btn btn-outline-info" title="Ver Técnicos Matriculados">
+                            <i class="ti-user"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    new DataTable('#tbl_cursos', {
+        layout: {
+            topStart: {
+                buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5']
+            }
+        }
+    });
+</script>
+{% endblock %}
