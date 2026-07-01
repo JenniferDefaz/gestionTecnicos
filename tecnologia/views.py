@@ -385,7 +385,7 @@ def cancelarMatricula(request, id):
         messages.error(request, 'No se encontró la información solicitada.')
         return redirect('/registrarMatricula/')
 
-    if inscripcion.estado != 'PENDIENTE':
+    if inscripcion.estado != 'EN CURSO':
         messages.error(request, 'No puede cancelar una inscripción ya evaluada')
         return redirect('/registrarMatricula/')
 
