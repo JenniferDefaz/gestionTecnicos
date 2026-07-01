@@ -1,17 +1,23 @@
 {% extends "./plantillaPrin.html" %}
-{% block contenido %}
 
+{% block contenido %}
 <center>
     <br>
-    <h1> <b>Mis Cursos</b>
-        <a href="/registrarMatricula/" class="btn btn-info"> <i class="ti-plus"></i>
-            Matricularme en un Curso</a>
+    <h1>
+        <b>Mis Cursos</b>
+        <a href="/registrarMatricula/" class="btn btn-info">
+            <i class="ti-plus"></i>
+            Matricularme en un Curso
+        </a>
     </h1>
     <hr>
 </center>
+
 <br>
+
 <div class="row">
     <div class="col-md-2"></div>
+
     <div class="col-md-8">
         <table id="tbl_mis_inscripciones" class="table table-striped table-bordered">
             <thead>
@@ -25,6 +31,7 @@
                     <th>CERTIFICADO</th>
                 </tr>
             </thead>
+
             <tbody>
                 {% for inscripcionTemporal in misInscripciones %}
                 <tr>
@@ -34,15 +41,17 @@
                     <td>{{ inscripcionTemporal.get_estado_display }}</td>
                     <td>{{ inscripcionTemporal.nota_final|default:"Sin calificar" }}</td>
                     <td>{{ inscripcionTemporal.fecha_inscripcion }}</td>
+
                     <td class="text-center">
                         {% if inscripcionTemporal.estado == "APROBADO" %}
-                            <a href="/certificado/{{ inscripcionTemporal.id }}/"
-                               onclick="window.open(this.href,'Certificado','width=900,height=700,resizable=yes,scrollbars=yes'); return false;"
-                               class="btn btn-outline-success" title="Ver Certificado">
-                                <i class="ti-medall-alt"></i>
-                            </a>
+                        <a href="/certificado/{{ inscripcionTemporal.id }}/"
+                           onclick="window.open(this.href,'Certificado','width=900,height=700,resizable=yes,scrollbars=yes'); return false;"
+                           class="btn btn-outline-success"
+                           title="Ver Certificado">
+                            <i class="ti-medall-alt"></i>
+                        </a>
                         {% else %}
-                            <b>N/A</b>
+                        <b>N/A</b>
                         {% endif %}
                     </td>
                 </tr>
@@ -51,10 +60,18 @@
         </table>
     </div>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
-    new DataTable('#tbl_mis_inscripciones', {
-        
+$(document).ready(function() {
+    $('#tbl_mis_inscripciones').DataTable({
+        layout: {
+            topStart: {
+                buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5']
+            }
+        }
     });
+});
 </script>
 {% endblock %}

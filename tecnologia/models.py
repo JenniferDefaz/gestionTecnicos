@@ -2,10 +2,27 @@ from django.db import models
 
 # Create your models here.
 from django.db import models
+#Este es necesario para lo que es el login 
+from django.contrib.auth.models import User
 
+#Django ya tiene un sistema de autenticación (django.contrib.auth) con modelo User que maneja usuario, contraseña y sesión
+
+class Perfil(models.Model):
+    ADMINISTRADOR = 'ADMIN'
+    TECNICO = 'TECNICO'
+    ROLES = [
+        (ADMINISTRADOR, 'Administrador'),
+        (TECNICO, 'Técnico en Tecnología'),
+    ]
+    id = models.AutoField(primary_key=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    rol = models.CharField(max_length=10, choices=ROLES, default=TECNICO)
+
+    
 
 class Tecnico(models.Model):
     id = models.AutoField(primary_key=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     nombres = models.CharField(max_length=80)
     apellidos = models.CharField(max_length=80)
     cedula = models.CharField(max_length=10, unique=True)

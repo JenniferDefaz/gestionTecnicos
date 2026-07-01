@@ -5,12 +5,20 @@ from django.contrib import messages
 
 urlpatterns = [
     path('', views.inicio),
+
+    path('login/', views.loginVista),
+    path('logout/', views.logoutVista),
+    path('registroTecnico/', views.registroVista),
+
+
     path('nuevoTecnico/', views.nuevoTecnico),
     path('guardarTecnico/', views.guardarTecnico),
     path('listadoTecnicos/', views.listadoTecnicos),
     path('eliminarTecnico/<int:id>/', views.eliminarTecnico),
     path('editarTecnico/<int:id>/', views.editarTecnico),
     path('actualizarTecnico/<int:id>/', views.actualizarTecnico),
+    path('miPerfil/', views.miPerfil),
+    path('actualizarMiPerfil/<int:id>/', views.actualizarMiPerfil),
 
    
     path('nuevoCurso/', views.nuevoCurso),
@@ -22,6 +30,7 @@ urlpatterns = [
 
     path('registrarMatricula/', views.registrarMatricula),
     path('matricularCurso/<int:id>/', views.matricularCurso),
+    path('cancelarMatricula/<int:id>/', views.cancelarMatricula),
     path('listadoInscripciones/', views.listadoInscripciones),
     path('listadoTecnicosCursos/<int:id>/', views.listadoTecnicosCursos),
     path('editarInscripcion/<int:id>/', views.editarInscripcion),

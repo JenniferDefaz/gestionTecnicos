@@ -1,0 +1,75 @@
+{% extends "./plantillaPrin.html" %}
+{% load static %}
+{% block contenido %}
+<div class="container">
+    <br>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card" style="border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+
+                <!-- Encabezado verde con foto -->
+                <div style="background-color: #1a3c6e; padding: 40px 20px 20px 20px; text-align: center;">
+                    {% if tecnico.foto %}
+                        <img src="{{ tecnico.foto.url }}"
+                             style="width:120px; height:120px; border-radius:50%; object-fit:cover; border: 4px solid #fff;">
+                    {% else %}
+                        <img src="{% static 'img/default-user.png' %}"
+                             style="width:120px; height:120px; border-radius:50%; object-fit:cover; border: 4px solid #fff;">
+                    {% endif %}
+                    <h4 style="color:#fff; margin-top:15px;"><b>{{ tecnico.nombres }} {{ tecnico.apellidos }}</b></h4>
+                    <p style="color:#c9a227;">{{ tecnico.especialidad }}</p>
+                </div>
+
+                <!-- Datos del perfil -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><i class="ti-id-badge" style="color:#1a3c6e;"></i> &nbsp;<b>Cédula:</b></p>
+                            <p style="color:#555;">{{ tecnico.cedula }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><i class="ti-mobile" style="color:#1a3c6e;"></i> &nbsp;<b>Teléfono:</b></p>
+                            <p style="color:#555;">{{ tecnico.telefono|default:"No registrado" }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p><i class="ti-email" style="color:#1a3c6e;"></i> &nbsp;<b>Correo:</b></p>
+                            <p style="color:#555;">{{ tecnico.correo }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p><i class="ti-bookmark" style="color:#1a3c6e;"></i> &nbsp;<b>Especialidad:</b></p>
+                            <p style="color:#555;">{{ tecnico.especialidad|default:"No registrada" }}</p>
+                        </div>
+                    </div>
+                    <hr>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- Botones -->
+                    <div class="text-center">
+                        <a href="/editarTecnico/{{ tecnico.id }}/" class="btn btn-warning">
+                            <i class="ti-pencil-alt"></i> Editar Mi Perfil
+                        </a>
+                        {% if tecnico.foto %}
+                            <a href="{{ tecnico.foto.url }}" target="_blank" class="btn btn-info">
+                                <i class="ti-image"></i> Ver Foto
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+
+{% endblock %}

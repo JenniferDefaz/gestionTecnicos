@@ -7,8 +7,18 @@
             <br>
             <h1><b>Registrar Nuevo Técnico</b></h1>
             <hr>
-            <form enctype="multipart/form-data" id="form_nuevo_tecnico" action="/guardarTecnico/" method="post">
+            <form enctype="multipart/form-data" id="form_nuevo_tecnico" action="/registroTecnico/" method="post">
                 {% csrf_token %}
+                <b>Usuario:</b> <br>
+                <input placeholder="Ingrese un nombre de usuario" class="form-control" type="text" name="username">
+                <br>
+                <b>Contraseña:</b> <br>
+                <input placeholder="Ingrese una contraseña" class="form-control" type="password" name="password1" id="id_password1_field">
+                <br>
+                <b>Confirmar Contraseña:</b> <br>
+                <input placeholder="Confirme su contraseña" class="form-control" type="password" name="password2">
+                <br>
+                <hr>
                 <b>Nombres:</b> <br>
                 <input placeholder="Ingrese sus nombres" class="form-control" type="text" name="nombres">
                 <br>
@@ -34,7 +44,7 @@
                 <button class="btn btn-success" type="submit">
                     <i class="icon-save"></i>
                     Guardar</button>
-                <a href="/listadoTecnicos/" class="btn btn-secondary">
+                <a href="/login/" class="btn btn-secondary">
                     <i class="icon-close"></i>
                     Cancelar</a>
             </form>
@@ -42,10 +52,26 @@
         </div>
     </div>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
+$(document).ready(function() {
+
     $("#form_nuevo_tecnico").validate({
         rules: {
+            username: {
+                required: true,
+                minlength: 4
+            },
+            password1: {
+                required: true,
+                minlength: 8
+            },
+            password2: {
+                required: true,
+                equalTo: "#id_password1_field"
+            },
             nombres: {
                 required: true,
                 minlength: 2,
@@ -76,6 +102,18 @@
             }
         },
         messages: {
+            username: {
+                required: "Por favor, ingrese un nombre de usuario",
+                minlength: "El usuario debe tener al menos 4 caracteres"
+            },
+            password1: {
+                required: "Por favor, ingrese una contraseña",
+                minlength: "La contraseña debe tener al menos 8 caracteres"
+            },
+            password2: {
+                required: "Por favor, confirme su contraseña",
+                equalTo: "Las contraseñas no coinciden"
+            },
             nombres: {
                 required: "Por favor, ingrese sus nombres",
                 minlength: "Los nombres deben tener al menos 2 caracteres",
@@ -106,15 +144,16 @@
             }
         }
     });
-</script>
-<script>
+
     $("#foto").fileinput({
         language: "es",
-        allowedFileExtensions: ["jpg|jpeg|png"],
+        allowedFileExtensions: ["jpg", "jpeg", "png"],
         showCaption: false,
         dropZoneEnabled: true,
         showClose: false,
     });
     $(".fileinput-upload").hide();
+
+});
 </script>
 {% endblock %}

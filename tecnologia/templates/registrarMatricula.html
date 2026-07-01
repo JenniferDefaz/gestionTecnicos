@@ -1,14 +1,17 @@
 {% extends "./plantillaPrin.html" %}
-{% block contenido %}
 
+{% block contenido %}
 <center>
     <br>
-    <h1> <b>Cursos Disponibles</b></h1>
+    <h1><b>Cursos Disponibles</b></h1>
     <hr>
 </center>
+
 <br>
+
 <div class="row">
     <div class="col-md-2"></div>
+
     <div class="col-md-8">
         <table id="tbl_cursos_disponibles" class="table table-striped table-bordered">
             <thead>
@@ -21,6 +24,7 @@
                     <th>ACCIÓN</th>
                 </tr>
             </thead>
+
             <tbody>
                 {% for cursoTemporal in misCursos %}
                 <tr>
@@ -29,12 +33,27 @@
                     <td>{{ cursoTemporal.instructor }}</td>
                     <td>{{ cursoTemporal.horas_duracion }} horas</td>
                     <td>{{ cursoTemporal.fecha_inicio }}</td>
+
                     <td>
+                        {% if cursoTemporal.id in idsMatriculados %}
+                        <a href="/cancelarMatricula/{{ cursoTemporal.id }}/"
+                           class="btn btn-outline-danger"
+                           title="Cancelar matrícula"
+                           onclick="confirmarAccion(event, this.href, 'cancelar')">
+                            <i class="ti-close"></i> Cancelar Matrícula
+                        </a>
+
+                        <button class="btn btn-secondary" disabled title="Ya está matriculado en este curso">
+                            <i class="ti-check-box"></i> Ya matriculado
+                        </button>
+                        {% else %}
                         <a href="/matricularCurso/{{ cursoTemporal.id }}/"
-                           class="btn btn-outline-success" title="Matricularme"
-                           onclick="return confirm('¿Desea matricularse en este curso?');">
+                           class="btn btn-outline-success"
+                           title="Matricularme"
+                           onclick="confirmarAccion(event, this.href, 'matricular')">
                             <i class="ti-check-box"></i> Matricularme
                         </a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -42,9 +61,41 @@
         </table>
     </div>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
-    new DataTable('#tbl_cursos_disponibles', {
+$(document).ready(function() {
+    $('#tbl_cursos_disponibles').DataTable({
+        layout: {
+            topStart: {
+                buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5']
+            }
+        }
     });
+});
+
+function confirmarAccion(event, url, tipo) {
+    event.preventDefault();
+
+    const esCancelar = tipo === 'cancelar';
+
+    Swal.fire({
+        title: esCancelar ? '¿Cancelar matrícula?' : '¿Matricularse en el curso?',
+        text: esCancelar
+            ? 'Se eliminará su matrícula en este curso. ¿Desea continuar?'
+            : 'Se registrará su matrícula en este curso. ¿Desea continuar?',
+        icon: esCancelar ? 'warning' : 'question',
+        showCancelButton: true,
+        confirmButtonColor: esCancelar ? '#dc3545' : '#198754',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: esCancelar ? 'Sí, cancelar matrícula' : 'Sí, matricularme',
+        cancelButtonText: 'No, volver'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = url;
+        }
+    });
+}
 </script>
 {% endblock %}

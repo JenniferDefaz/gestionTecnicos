@@ -1,79 +1,199 @@
-
 {% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificado - {{ inscripcion.tecnico.nombres }} {{ inscripcion.tecnico.apellidos }}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
+    <script src="{% static 'js/qrcode.min.js' %}"></script>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Georgia', serif;
+        }
+        .certificado-wrapper {
+            background-color: #fffdf7;
+            border: 8px double #1a3c6e;
+            outline: 3px solid #c9a227;
+            outline-offset: -16px;
+            padding: 50px;
+            max-width: 900px;
+            margin: 30px auto;
+            position: relative;
+        }
+        .sello-esquina {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 3px solid #c9a227;
+            opacity: 0.3;
+        }
+        .sello-tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+        .sello-tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+        .sello-bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+        .sello-br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+        .titulo-principal {
+            color: #1a3c6e;
+            letter-spacing: 6px;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .subtitulo {
+            letter-spacing: 3px;
+            color: #c9a227;
+            font-size: 0.85rem;
+        }
+        .nombre-tecnico {
+            color: #1a3c6e;
+            font-size: 1.9rem;
+            font-weight: bold;
+            border-bottom: 3px solid #c9a227;
+            display: inline-block;
+            padding-bottom: 6px;
+        }
+        .nombre-curso {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #333;
+        }
+        .linea-firma {
+            border-top: 2px solid #1a3c6e;
+            width: 240px;
+            margin: 0 auto 6px auto;
+        }
+        .badge-aprobado {
+            background-color: #1a3c6e;
+            color: #c9a227;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            padding: 4px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+        @media print {
+            body { background-color: white; }
+            .no-print { display: none !important; }
+            .certificado-wrapper { margin: 0; border: 8px double #1a3c6e; }
+        }
+    </style>
+</head>
+<body>
 
-<div class="container my-4">
-    <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
+<div class="certificado-wrapper">
+    <!-- Esquinas decorativas -->
+    <div class="sello-esquina sello-tl"></div>
+    <div class="sello-esquina sello-tr"></div>
+    <div class="sello-esquina sello-bl"></div>
+    <div class="sello-esquina sello-br"></div>
 
-            <div class="border border-5 p-5" style="border-color:#1a3c6e !important; background-color:#fffdf7;">
-
-                <div class="d-flex justify-content-between align-items-center">
-                    <img src="{% static 'img/logo_institucion.png' %}" alt="Logo Institución" style="height:75px;">
-                    <img src="{% static 'img/logo_secundario.png' %}" alt="Logo Secundario" style="height:75px;">
-                </div>
-
-                <div class="text-center mt-3">
-                    <p class="text-uppercase mb-1" style="letter-spacing:3px; color:#c9a227;">
-                        Sistema de Gestión de Técnicos en Tecnología</p>
-                    <h1 class="text-uppercase fw-bold" style="color:#1a3c6e; letter-spacing:6px;">
-                        Certificado de Aprobación</h1>
-                </div>
-
-                <div class="text-center my-4">
-                    <p class="fs-5">Se otorga el presente certificado a:</p>
-                    <h2 class="fw-bold d-inline-block border-bottom border-3 pb-2 mb-3" style="color:#1a3c6e; border-color:#c9a227 !important;">
-                        {{ inscripcion.tecnico.nombres }} {{ inscripcion.tecnico.apellidos }}
-                    </h2>
-                    <p class="fs-5">Por haber aprobado satisfactoriamente el curso:</p>
-                    <h4 class="fst-italic mb-4">"{{ inscripcion.curso.nombre }}"</h4>
-
-                    <div class="d-flex justify-content-center gap-5 text-secondary">
-                        <p><b>Cédula:</b> {{ inscripcion.tecnico.cedula }}</p>
-                        <p><b>Instructor:</b> {{ inscripcion.curso.instructor }}</p>
-                        <p><b>Duración:</b> {{ inscripcion.curso.horas_duracion }} horas</p>
-                        <p><b>Nota Final:</b> {{ inscripcion.nota_final }}</p>
-                    </div>
-                </div>
-
-                <div class="d-flex justify-content-between align-items-end mt-5">
-                    <div class="text-center" style="width:280px;">
-                        <hr class="border-2" style="border-color:#1a3c6e;">
-                        <p class="mb-0"><b>Director Académico</b></p>
-                        <p class="small text-muted text-uppercase">Firma de Responsabilidad</p>
-                    </div>
-
-                    <div class="text-center" style="width:160px;">
-                        <!-- Espacio reservado para el codigo QR, se conecta despues -->
-                        <div id="qrcode" class="border border-secondary d-flex align-items-center justify-content-center mx-auto text-muted small"
-                             style="width:128px; height:128px;">
-                            QR aquí
-                        </div>
-                        <p class="small text-muted mt-1">Escanee para validar</p>
-                    </div>
-
-                    <div class="text-center" style="width:280px;">
-                        <hr class="border-2" style="border-color:#1a3c6e;">
-                        <p class="mb-0"><b>Coordinador de Cursos</b></p>
-                        <p class="small text-muted text-uppercase">Firma de Responsabilidad</p>
-                    </div>
-                </div>
-
-                <div class="text-center text-muted small mt-4">
-                    Certificado N.° {{ inscripcion.id }} &nbsp;|&nbsp; Fecha de emisión: {{ inscripcion.fecha_inscripcion }}
-                </div>
-
-            </div>
-
-            <div class="text-center mt-3">
-                <button class="btn btn-primary" onclick="window.print();">Imprimir Certificado</button>
-            </div>
-
+    <!-- Encabezado con logos -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <img src="{% static 'img/utc.png' %}" alt="Logo" style="height:80px;">
+        <div class="text-center">
+            <div class="badge-aprobado">✓ APROBADO</div>
+            <p class="subtitulo mb-0">SISTEMA DE GESTIÓN DE TÉCNICOS EN TECNOLOGÍA</p>
+            <h1 class="titulo-principal mb-0">Certificado de Aprobación</h1>
         </div>
+        <img src="{% static 'img/logo_secundario.png' %}" alt="Logo Secundario" style="height:80px;">
+    </div>
+
+    <hr style="border: 1px solid #c9a227; margin: 0 0 30px 0;">
+
+    <!-- Cuerpo del certificado -->
+    <div class="text-center my-4">
+        <p class="fs-5 text-muted mb-1">La Universidad Técnica de Cotopaxi certifica que:</p>
+        <div class="my-3">
+            <span class="nombre-tecnico">
+                {{ inscripcion.tecnico.nombres }} {{ inscripcion.tecnico.apellidos }}
+            </span>
+        </div>
+        <p class="fs-5 text-muted mb-2">ha aprobado satisfactoriamente el curso:</p>
+        <p class="nombre-curso mb-4">"{{ inscripcion.curso.nombre }}"</p>
+
+        <!-- Datos en tarjetas -->
+        <div class="row justify-content-center g-3 mb-4">
+            <div class="col-auto">
+                <div class="border rounded px-4 py-2" style="border-color:#c9a227 !important;">
+                    <div class="text-muted small">Cédula</div>
+                    <div class="fw-bold">{{ inscripcion.tecnico.cedula }}</div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="border rounded px-4 py-2" style="border-color:#c9a227 !important;">
+                    <div class="text-muted small">Instructor</div>
+                    <div class="fw-bold">{{ inscripcion.curso.instructor }}</div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="border rounded px-4 py-2" style="border-color:#c9a227 !important;">
+                    <div class="text-muted small">Duración</div>
+                    <div class="fw-bold">{{ inscripcion.curso.horas_duracion }} horas</div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="border rounded px-4 py-2" style="border-color:#c9a227 !important;">
+                    <div class="text-muted small">Nota Final</div>
+                    <div class="fw-bold" style="color:#1a3c6e;">{{ inscripcion.nota_final }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firmas y QR -->
+    <div class="d-flex justify-content-between align-items-end mt-5">
+        <div class="text-center">
+            <div class="linea-firma"></div>
+            <p class="mb-0 fw-bold">Director Académico</p>
+            <p class="small text-muted text-uppercase">Firma de Responsabilidad</p>
+        </div>
+
+        <div class="text-center">
+            <div id="qrcode{{ inscripcion.id }}" class="mx-auto"></div>
+            <p class="small text-muted mt-1">Escanee para validar</p>
+        </div>
+
+        <div class="text-center">
+            <div class="linea-firma"></div>
+            <p class="mb-0 fw-bold">Coordinador de Cursos</p>
+            <p class="small text-muted text-uppercase">Firma de Responsabilidad</p>
+        </div>
+    </div>
+
+    <!-- Pie del certificado -->
+    <hr style="border: 1px solid #c9a227; margin: 30px 0 10px 0;">
+    <div class="text-center text-muted small">
+        Certificado N.° {{ inscripcion.id }} &nbsp;|&nbsp;
+        Fecha de emisión: {{ inscripcion.fecha_inscripcion }} &nbsp;|&nbsp;
+        Universidad Técnica de Cotopaxi — Latacunga, Ecuador
     </div>
 </div>
 
-<style media="print">
-    .btn { display: none; }
-</style>
+<!-- Botones -->
+<div class="text-center mt-3 no-print">
+    <button class="btn btn-primary me-2" onclick="window.print();">
+        🖨️ Imprimir Certificado
+    </button>
+    <a href="/listadoInscripciones/" class="btn btn-secondary">
+        ← Volver
+    </a>
+</div>
 
+<script type="text/javascript">
+    var texto = "{{ inscripcion.tecnico.nombres|escapejs }} {{ inscripcion.tecnico.apellidos|escapejs }} | " +
+                "{{ inscripcion.tecnico.cedula }} | " +
+                "{{ inscripcion.curso.nombre|escapejs }} | " +
+                "Nota: {{ inscripcion.nota_final }}";
+
+    new QRCode(document.getElementById("qrcode{{ inscripcion.id }}"), {
+        text: texto,
+        width: 128,
+        height: 128,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.L
+    });
+</script>
+
+</body>
+</html>

@@ -4,8 +4,8 @@
 <center>
     <br>
     <h1> <b>Técnicos Registrados</b>
-        <a href="/nuevoTecnico/" class="btn btn-info"> <i class="ti-plus"></i>
-            Agregar Nuevo</a>
+        <!--<a href="/nuevoTecnico/" class="btn btn-info"> <i class="ti-plus"></i>
+            Agregar Nuevo</a>-->
     </h1>
     <hr>
 </center>
@@ -46,20 +46,10 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="/editarTecnico/{{ tecnicoTemporal.id }}/" class="btn btn-outline-warning" title="Editar Técnico">
-                            <i class="ti-pencil-alt"></i>
-                        </a>
-                        <a href="/eliminarTecnico/{{ tecnicoTemporal.id }}/"
-                        class="btn btn-outline-danger" title="Eliminar Técnico"
-                        onclick="confirmarEliminacion(event, this.href)">
-                            <i class="ti-trash"></i>
-                        </a>
-
                         {% if tecnicoTemporal.foto %}
                             <a title="Ver Imagen" class="btn btn-outline-info" href="{{ tecnicoTemporal.foto.url }}" target="_blank">
                                 <i class="ti-image"></i>
                             </a>
-
                             <a title="Descargar Imagen" class="btn btn-outline-dark" href="{{ tecnicoTemporal.foto.url }}" download>
                                 <i class="ti-download"></i>
                             </a>
@@ -67,7 +57,6 @@
                             <a title="No hay imagen disponible" class="disabled btn btn-outline-info" href="javascript:void(0)">
                                 <i class="ti-image"></i>
                             </a>
-
                             <a title="No hay imagen disponible" class="disabled btn btn-outline-dark" href="javascript:void(0)">
                                 <i class="ti-download"></i>
                             </a>

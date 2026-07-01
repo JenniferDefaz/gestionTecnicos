@@ -43,8 +43,12 @@
         </div>
     </div>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
+$(document).ready(function() {
+
     $("#form_editar_tecnico").validate({
         rules: {
             nombres: { required: true, minlength: 2, maxlength: 80 },
@@ -83,17 +87,16 @@
             }
         }
     });
-</script>
-<script>
-    $(document).ready(function() {
-        $("#foto").fileinput({
-            language: "es",
-            allowedFileExtensions: ["jpg", "jpeg", "png"],
-            showCaption: false,
-            dropZoneEnabled: true,
-            showClose: false,
-        });
-        $(".fileinput-upload").hide();
+
+    $("#foto").fileinput({
+        language: "es",
+        allowedFileExtensions: ["jpg", "jpeg", "png"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        showClose: false,
     });
+    $(".fileinput-upload").hide();
+
+});
 </script>
 {% endblock %}
