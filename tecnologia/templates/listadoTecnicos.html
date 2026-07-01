@@ -47,6 +47,13 @@
                     </td>
                     <td>
                         {% if tecnicoTemporal.foto %}
+                        <a title="Editar Técnico" class="btn btn-outline-warning" href="/editarTecnico/{{ tecnicoTemporal.id }}/">
+                        <i class="ti-pencil-alt"></i>
+                        </a>
+                        <a title="Eliminar Técnico" class="btn btn-outline-danger"
+                        href="#" onclick="confirmarEliminacion(event, '/eliminarTecnico/{{ tecnicoTemporal.id }}/')">
+                        <i class="ti-trash"></i>
+                        </a>
                             <a title="Ver Imagen" class="btn btn-outline-info" href="{{ tecnicoTemporal.foto.url }}" target="_blank">
                                 <i class="ti-image"></i>
                             </a>

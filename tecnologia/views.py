@@ -6,6 +6,7 @@ from .models import Tecnico, Curso, Inscripcion, Perfil
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 
 
@@ -199,7 +200,11 @@ def actualizarTecnico(request, id):
 def miPerfil(request):
     if request.user.perfil.rol == 'ADMIN':
         return redirect('/listadoTecnicos/')
-    tecnicoActual = Tecnico.objects.get(usuario=request.user)
+    try:
+        tecnicoActual = Tecnico.objects.get(usuario=request.user)
+    except Tecnico.DoesNotExist:
+        messages.error(request, 'No se encontró su perfil de técnico. Por favor, contacte al administrador.')
+        return redirect('/login/')
     return render(request, 'miPerfil.html', {'tecnico': tecnicoActual})
 
 @login_required(login_url='/login/')
@@ -240,9 +245,7 @@ def actualizarMiPerfil(request, id):
     return redirect('/miPerfil/')
 
 
-# ============================================================
 # CURSO
-# ============================================================
 
 @login_required(login_url='/login/')
 def nuevoCurso(request):
@@ -260,6 +263,11 @@ def guardarCurso(request):
     horasNuevoCurso = request.POST["horas_duracion"]
     fechaInicioNuevoCurso = request.POST["fecha_inicio"]
     fechaFinNuevoCurso = request.POST["fecha_fin"]
+
+    # NUEVO: validar que la fecha fin sea posterior a la fecha inicio
+    if fechaFinNuevoCurso <= fechaInicioNuevoCurso:
+        messages.error(request, 'La fecha de fin debe ser posterior a la fecha de inicio')
+        return redirect('/nuevoCurso/')
 
     Curso.objects.create(
         nombre=nombreNuevoCurso,
@@ -304,6 +312,13 @@ def actualizarCurso(request, id):
     fin = request.POST['fecha_inicio']
     ffin = request.POST['fecha_fin']
 
+    # NUEVO: validar fechas
+    fechaInicioObj = datetime.strptime(fin, '%Y-%m-%d').date()
+    fechaFinObj = datetime.strptime(ffin, '%Y-%m-%d').date()
+    if fechaFinObj <= fechaInicioObj:
+        messages.error(request, 'La fecha de fin debe ser posterior a la fecha de inicio')
+        return redirect(f'/editarCurso/{id}/')
+
     cursoActualizar = Curso.objects.get(id=id)
     cursoActualizar.nombre = nom
     cursoActualizar.descripcion = des
@@ -316,16 +331,19 @@ def actualizarCurso(request, id):
     return redirect('/listadoCursos')
 
 
-# ============================================================
 # INSCRIPCION (MATRICULA)
-# ============================================================
+
 
 @login_required(login_url='/login/')
 def registrarMatricula(request):
     if request.user.perfil.rol == 'ADMIN':
         return redirect('/listadoCursos/')
+    try:
+        tecnicoActual = Tecnico.objects.get(usuario=request.user)
+    except Tecnico.DoesNotExist:
+        messages.error(request, 'No se encontró su perfil de técnico. Por favor, contacte al administrador.')
+        return redirect('/login/')
     cursos = Curso.objects.all()
-    tecnicoActual = Tecnico.objects.get(usuario=request.user)
     idsMatriculados = Inscripcion.objects.filter(tecnico=tecnicoActual).values_list('curso_id', flat=True)
     return render(request, 'registrarMatricula.html', {
         'misCursos': cursos,
@@ -336,8 +354,13 @@ def registrarMatricula(request):
 def matricularCurso(request, id):
     if request.user.perfil.rol == 'ADMIN':
         return redirect('/listadoCursos/')
+    try:
+        tecnicoActual = Tecnico.objects.get(usuario=request.user)
+    except Tecnico.DoesNotExist:
+        messages.error(request, 'No se encontró su perfil de técnico. Por favor, contacte al administrador.')
+        return redirect('/login/')
+
     cursoAMatricular = Curso.objects.get(id=id)
-    tecnicoActual = Tecnico.objects.get(usuario=request.user)
 
     if Inscripcion.objects.filter(tecnico=tecnicoActual, curso=cursoAMatricular).exists():
         messages.error(request, 'Ya está matriculado en este curso')
@@ -355,8 +378,12 @@ def matricularCurso(request, id):
 def cancelarMatricula(request, id):
     if request.user.perfil.rol == 'ADMIN':
         return redirect('/listadoCursos/')
-    tecnicoActual = Tecnico.objects.get(usuario=request.user)
-    inscripcion = Inscripcion.objects.get(tecnico=tecnicoActual, curso_id=id)
+    try:
+        tecnicoActual = Tecnico.objects.get(usuario=request.user)
+        inscripcion = Inscripcion.objects.get(tecnico=tecnicoActual, curso_id=id)
+    except (Tecnico.DoesNotExist, Inscripcion.DoesNotExist):
+        messages.error(request, 'No se encontró la información solicitada.')
+        return redirect('/registrarMatricula/')
 
     if inscripcion.estado != 'PENDIENTE':
         messages.error(request, 'No puede cancelar una inscripción ya evaluada')
@@ -371,8 +398,12 @@ def listadoInscripciones(request):
     if request.user.perfil.rol == 'ADMIN':
         inscripciones = Inscripcion.objects.all()
     else:
-        tecnicoActual = Tecnico.objects.get(usuario=request.user)
-        inscripciones = Inscripcion.objects.filter(tecnico=tecnicoActual)
+        try:
+            tecnicoActual = Tecnico.objects.get(usuario=request.user)
+            inscripciones = Inscripcion.objects.filter(tecnico=tecnicoActual)
+        except Tecnico.DoesNotExist:
+            messages.error(request, 'No se encontró su perfil de técnico. Por favor, contacte al administrador.')
+            return redirect('/login/')
     return render(request, 'listadoInscripciones.html', {'misInscripciones': inscripciones})
 
 @login_required(login_url='/login/')

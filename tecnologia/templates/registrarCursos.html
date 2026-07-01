@@ -1,54 +1,92 @@
 {% extends "./plantillaPrin.html" %}
+
 {% block contenido %}
 <div class="container">
     <div class="row">
         <div class="col-md-3"></div>
+
         <div class="col-md-6">
             <br>
             <h1><b>Registrar Nuevo Curso</b></h1>
             <hr>
+
             <form id="form_nuevo_curso" action="/guardarCurso/" method="post">
                 {% csrf_token %}
-                <b>Nombre del Curso:</b> <br>
+
+                <b>Nombre del Curso:</b>
+                <br>
                 <input placeholder="Ingrese el nombre del curso" class="form-control" type="text" name="nombre">
                 <br>
-                <b>Descripción:</b> <br>
+
+                <b>Descripción:</b>
+                <br>
                 <textarea placeholder="Ingrese una breve descripción" class="form-control" name="descripcion"></textarea>
                 <br>
-                <b>Instructor:</b> <br>
+
+                <b>Instructor:</b>
+                <br>
                 <input placeholder="Ingrese el nombre del instructor" class="form-control" type="text" name="instructor">
                 <br>
-                <b>Horas de duración:</b> <br>
+
+                <b>Horas de duración:</b>
+                <br>
                 <input placeholder="Ingrese las horas de duración" class="form-control" type="number" name="horas_duracion">
                 <br>
-                <b>Fecha de inicio:</b> <br>
-                <input class="form-control" type="date" name="fecha_inicio">
+
+                <b>Fecha de inicio:</b>
                 <br>
-                <b>Fecha de fin:</b> <br>
-                <input class="form-control" type="date" name="fecha_fin">
+                <input id="fecha_inicio" class="form-control" type="date" name="fecha_inicio">
+                <br>
+
+                <b>Fecha de fin:</b>
+                <br>
+                <input id="fecha_fin" class="form-control" type="date" name="fecha_fin">
                 <br>
                 <br>
+
                 <button class="btn btn-success" type="submit">
                     <i class="icon-save"></i>
-                    Guardar</button>
+                    Guardar
+                </button>
+
                 <a href="/listadoCursos/" class="btn btn-secondary">
                     <i class="icon-close"></i>
-                    Cancelar</a>
+                    Cancelar
+                </a>
             </form>
             <br>
         </div>
     </div>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
+$(document).ready(function() {
+
+    // Regla personalizada: la fecha de fin debe ser posterior a la de inicio
+    $.validator.addMethod("greaterThanDate", function(value, element, param) {
+        var fechaInicio = $(param).val();
+
+        if (!value || !fechaInicio) {
+            return true; // deja que "required" se encargue de campos vacíos
+        }
+
+        return value > fechaInicio;
+    }, "La fecha de fin debe ser posterior a la fecha de inicio");
+
     $("#form_nuevo_curso").validate({
         rules: {
             nombre: { required: true, minlength: 3, maxlength: 100 },
             instructor: { required: true, minlength: 3, maxlength: 100 },
             horas_duracion: { required: true, number: true, min: 1, max: 1000 },
             fecha_inicio: { required: true },
-            fecha_fin: { required: true }
+            fecha_fin: {
+                required: true,
+                greaterThanDate: "#fecha_inicio"
+            }
         },
+
         messages: {
             nombre: {
                 required: "Por favor, ingrese el nombre del curso",
@@ -63,9 +101,16 @@
                 min: "Debe ser al menos 1 hora",
                 max: "No puede exceder 1000 horas"
             },
-            fecha_inicio: { required: "Seleccione la fecha de inicio" },
-            fecha_fin: { required: "Seleccione la fecha de fin" }
+            fecha_inicio: {
+                required: "Seleccione la fecha de inicio"
+            },
+            fecha_fin: {
+                required: "Seleccione la fecha de fin",
+                greaterThanDate: "La fecha de fin debe ser posterior a la fecha de inicio"
+            }
         }
     });
+
+});
 </script>
 {% endblock %}

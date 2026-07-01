@@ -73,7 +73,6 @@
 				<a href=""><i class="fa fa-shopping-cart"></i></a>
 			</div>
 			<ul class="main-menu">
-			<li><a href="/">INICIO</a></li>
 			{% if request.user.is_authenticated %}
 				{% if request.user.perfil.rol == 'ADMIN' %}
 					<li><a href="/listadoTecnicos/">Técnicos</a></li>
@@ -84,10 +83,11 @@
 				{% endif %}
 				<li><a href="/logout/">Cerrar Sesión</a></li>
 			{% else %}
+				<li><a href="/">INICIO</a></li>
 				<li><a href="/login/">Iniciar Sesión</a></li>
-				<li><a href="/registroTecnico/">Registrarme</a></li>
+				<li><a href="/registro/">Registrarme</a></li>
 			{% endif %}
-		</ul>
+			</ul>
 		</div>
 	</nav>
     {% block contenido %}
@@ -210,9 +210,9 @@ Derechos reservados &copy;<script>document.write(new Date().getFullYear());</scr
     {% for mensaje in messages %}
     <script>
         Swal.fire({
-            title: '{% if mensaje.tags == "success" %}¡Éxito!{% elif mensaje.tags == "error" %}¡Error!{% else %}Aviso{% endif %}',
+            title: '{% if mensaje.tags == "error" %}Error{% else %}Confirmación{% endif %}',
             text: '{{ mensaje }}',
-            icon: '{% if mensaje.tags == "success" %}success{% elif mensaje.tags == "error" %}error{% else %}info{% endif %}',
+            icon: '{% if mensaje.tags == "error" %}error{% else %}success{% endif %}',
             confirmButtonText: 'Aceptar'
         });
     </script>
