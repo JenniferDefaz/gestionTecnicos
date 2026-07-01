@@ -75,14 +75,18 @@
         </table>
     </div>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
-    new DataTable('#tbl_tecnicos', {
+$(document).ready(function() {
+    $('#tbl_tecnicos').DataTable({
         layout: {
             topStart: {
                 buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5']
             }
-        },
+        }
     });
+});
 </script>
 {% endblock %}
