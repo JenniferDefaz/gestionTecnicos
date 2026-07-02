@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Técnicos</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- QR AQUÍ EN EL HEAD -->
+    <script src="{% static 'js/qrcode.min.js' %}"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #fff; }
+        .encabezado { border-bottom: 3px solid #1a3c6e; padding-bottom: 10px; margin-bottom: 20px; }
+        .titulo-reporte { color: #1a3c6e; font-size: 1.5rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+        .subtitulo-reporte { color: #c9a227; font-size: 0.85rem; letter-spacing: 1px; }
+        .tarjeta-tecnico { border: 1px solid #dee2e6; padding: 15px; margin-bottom: 20px; page-break-inside: avoid; }
+        .foto-tecnico { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 3px solid #1a3c6e; }
+        .foto-placeholder { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #1a3c6e; background: #e9ecef; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #1a3c6e; }
+        .linea-firma { border-top: 2px solid #1a3c6e; width: 200px; margin: 0 auto 5px auto; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+        }
+    </style>
+</head>
+<body>
+<div class="container py-4">
+
+    <!-- Encabezado -->
+    <div class="encabezado">
+        <table width="100%">
+            <tr>
+                <td style="text-align:left; width:150px;">
+                    <img src="{% static 'img/utc.png' %}" style="height:80px;" alt="">
+                </td>
+                <td style="text-align:center;">
+                    <div class="subtitulo-reporte">SISTEMA DE GESTIÓN DE TÉCNICOS EN TECNOLOGÍA</div>
+                    <div class="titulo-reporte">Reporte de Técnicos Registrados</div>
+                    <div class="text-muted small">Universidad Técnica de Cotopaxi — Latacunga, Ecuador</div>
+                    <div class="text-muted small">Total de técnicos: <b>{{ misTecnicos|length }}</b></div>
+                </td>
+                <td style="text-align:right; width:150px;">
+                    <img src="{% static 'img/logo_secundario.png' %}" style="height:80px;" alt="">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Listado -->
+    {% for t in misTecnicos %}
+    <div class="tarjeta-tecnico">
+        <table width="100%">
+            <tr>
+                <!-- Foto -->
+                <td style="width:120px; text-align:center; vertical-align:middle;">
+                    {% if t.foto %}
+                        <img src="{{ t.foto.url }}" class="foto-tecnico" alt="Foto">
+                    {% else %}
+                        <div class="foto-placeholder">👤</div>
+                    {% endif %}
+                    <div class="text-muted small mt-1">Técnico #{{ t.id }}</div>
+                </td>
+
+                <!-- Datos -->
+                <td style="padding-left:20px; vertical-align:middle;">
+                    <hr>
+                    <h5 style="text-transform:uppercase; color:#1a3c6e;">
+                        <b>{{ t.nombres }} {{ t.apellidos }}</b>
+                    </h5>
+                    <hr>
+                    <h6><b>CÉDULA:</b> {{ t.cedula }}</h6>
+                    <hr>
+                    <h6><b>CORREO:</b> {{ t.correo }}</h6>
+                    <hr>
+                    <h6><b>TELÉFONO:</b> {{ t.telefono|default:"No registrado" }}</h6>
+                    <hr>
+                    <h6><b>ESPECIALIDAD:</b> {{ t.especialidad|default:"No registrada" }}</h6>
+                </td>
+
+                <!-- QR justo debajo de su div como hizo tu profe -->
+                <td style="width:120px; text-align:center; vertical-align:middle;">
+                    <div id="qrcode{{ t.id }}"></div>
+                    <div class="text-muted small mt-1">Escanear</div>
+                    <script type="text/javascript">
+                        var texto = "NOMBRE: {{ t.nombres|escapejs }} {{ t.apellidos|escapejs }} \n CEDULA: {{ t.cedula }} \n ESPECIALIDAD: {{ t.especialidad|escapejs }}";
+                        new QRCode(document.getElementById("qrcode{{ t.id }}"), {
+                            text: texto,
+                            width: 128,
+                            height: 128,
+                            colorDark: "#000",
+                            colorLight: "#ffffff"
+                        });
+                    </script>
+                </td>
+            </tr>
+        </table>
+    </div>
+    {% empty %}
+    <div class="alert alert-info text-center">No hay técnicos registrados.</div>
+    {% endfor %}
+
+    <!-- Firma -->
+    <div class="text-center mt-5">
+        <br><br>
+        <div class="linea-firma"></div>
+        <b>FIRMA DE RESPONSABILIDAD</b><br>
+        <b>C.I.:___________________</b><br>
+        <b>DIRECTOR ACADÉMICO</b>
+    </div>
+
+    <!-- Botón -->
+    <div class="text-center mt-4 no-print">
+        <button class="btn btn-primary" onclick="window.print();">
+            🖨️ Imprimir Reporte
+        </button>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    setTimeout(function() {
+        window.print();
+    }, 1500);
+</script>
+
+</body>
+</html>

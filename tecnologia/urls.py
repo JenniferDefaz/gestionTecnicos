@@ -37,7 +37,11 @@ urlpatterns = [
     path('actualizarInscripcion/<int:id>/', views.actualizarInscripcion),
 
     path('certificado/<int:id>/', views.certificado),
-
+    path('reporteTecnicos/', views.reporteTecnicos),
+    
+    path('verificarUsername/', views.verificarUsername),
+    path('verificarCedula/', views.verificarCedula),
+    path('verificarCorreo/', views.verificarCorreo),
 ]
 
 

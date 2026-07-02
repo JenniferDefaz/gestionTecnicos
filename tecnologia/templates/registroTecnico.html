@@ -9,7 +9,7 @@
             <hr>
             <form enctype="multipart/form-data" id="form_nuevo_tecnico" action="/registroTecnico/" method="post">
                 {% csrf_token %}
-                <b>Usuario:</b> <br>
+                <b>Usuario (para iniciar sesión):</b> <br>
                 <input placeholder="Ingrese un nombre de usuario" class="form-control" type="text" name="username">
                 <br>
                 <b>Contraseña:</b> <br>
@@ -59,10 +59,21 @@
 $(document).ready(function() {
 
     $("#form_nuevo_tecnico").validate({
+        errorClass: "text-danger",
+        errorElement: "small",
         rules: {
             username: {
                 required: true,
-                minlength: 4
+                minlength: 4,
+                remote: {
+                    url: '/verificarUsername/',
+                    type: 'get',
+                    data: {
+                        username: function() {
+                            return $('#form_nuevo_tecnico input[name="username"]').val();
+                        }
+                    }
+                }
             },
             password1: {
                 required: true,
@@ -86,11 +97,29 @@ $(document).ready(function() {
                 required: true,
                 minlength: 10,
                 maxlength: 10,
-                digits: true
+                digits: true,
+                remote: {
+                    url: '/verificarCedula/',
+                    type: 'get',
+                    data: {
+                        cedula: function() {
+                            return $('#form_nuevo_tecnico input[name="cedula"]').val();
+                        }
+                    }
+                }
             },
             correo: {
                 required: true,
-                email: true
+                email: true,
+                remote: {
+                    url: '/verificarCorreo/',
+                    type: 'get',
+                    data: {
+                        correo: function() {
+                            return $('#form_nuevo_tecnico input[name="correo"]').val();
+                        }
+                    }
+                }
             },
             telefono: {
                 minlength: 10,
@@ -104,7 +133,8 @@ $(document).ready(function() {
         messages: {
             username: {
                 required: "Por favor, ingrese un nombre de usuario",
-                minlength: "El usuario debe tener al menos 4 caracteres"
+                minlength: "El usuario debe tener al menos 4 caracteres",
+                remote: "Ese nombre de usuario ya está en uso"
             },
             password1: {
                 required: "Por favor, ingrese una contraseña",
@@ -128,11 +158,13 @@ $(document).ready(function() {
                 required: "Por favor, ingrese su número de cédula",
                 minlength: "La cédula debe tener 10 dígitos",
                 maxlength: "La cédula debe tener 10 dígitos",
-                digits: "La cédula solo debe contener números"
+                digits: "La cédula solo debe contener números",
+                remote: "Ya existe un técnico registrado con esa cédula"
             },
             correo: {
                 required: "Por favor, ingrese su correo electrónico",
-                email: "Ingrese un correo electrónico válido"
+                email: "Ingrese un correo electrónico válido",
+                remote: "Ya existe un técnico registrado con ese correo"
             },
             telefono: {
                 minlength: "El teléfono debe tener 10 dígitos",

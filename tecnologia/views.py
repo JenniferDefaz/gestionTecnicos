@@ -7,9 +7,22 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.http import JsonResponse
 
+def verificarUsername(request):
+    username = request.GET.get('username', '')
+    existe = User.objects.filter(username=username).exists()
+    return JsonResponse(not existe, safe=False)
 
+def verificarCedula(request):
+    cedula = request.GET.get('cedula', '')
+    existe = Tecnico.objects.filter(cedula=cedula).exists()
+    return JsonResponse(not existe, safe=False)
 
+def verificarCorreo(request):
+    correo = request.GET.get('correo', '')
+    existe = Tecnico.objects.filter(correo=correo).exists()
+    return JsonResponse(not existe, safe=False)
 
 def loginVista(request):
     if request.method == 'POST':
@@ -441,3 +454,10 @@ def certificado(request, id):
         messages.error(request, 'El certificado no está disponible para esta inscripción')
         return redirect('/listadoInscripciones/')
     return render(request, 'certificado.html', {'inscripcion': inscripcionCertificado})
+
+@login_required(login_url='/login/')
+def reporteTecnicos(request):
+    if request.user.perfil.rol != 'ADMIN':
+        return redirect('/listadoInscripciones/')
+    tecnicos = Tecnico.objects.all()
+    return render(request, 'reporteTecnicos.html', {'misTecnicos': tecnicos})
